@@ -78,6 +78,7 @@ export class PostsComponent implements OnInit {
         this.getList();
         this.reset();
         this.showError = false;
+        this.modalRef?.hide();
       });
     }else{
       this.postService.add(this.selectedPost)
@@ -85,6 +86,7 @@ export class PostsComponent implements OnInit {
         this.getList();
         this.reset();
         this.showError = false;
+        this.modalRef?.hide();
       });
     }
   }
