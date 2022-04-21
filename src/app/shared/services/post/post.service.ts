@@ -9,7 +9,7 @@ import { Post } from '../../models/post';
 })
 export class PostService {
 
-  private _url = "https://gorest.co.in/public/v2/posts";
+  private _url = "http://localhost:8000/api/posts";
 
   posts: Post[] = [
     new Post(1, 'Kurs Angular', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.'),
