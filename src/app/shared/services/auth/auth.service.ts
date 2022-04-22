@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -7,7 +8,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 export class AuthService {
 
   // Variables
-  authUrl = 'http://localhost:8000/oauth/token';
+  authUrl = 'http://localhost:8000/login';
   apiUrl = 'http://localhost:8000/api';
   options: any;
   /**
@@ -15,7 +16,8 @@ export class AuthService {
    * @param http The http client object
    */
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private router: Router,
   ) {
     this.options = {
       headers: new HttpHeaders({
@@ -25,28 +27,32 @@ export class AuthService {
     };
   }
 
-  /**
-   * Get an access token
-   * @param e The email address
-   * @param p The password string
-   */
-  login(e: string, p: string) {
+  
+  login(email: string, password: string) {
     return this.http.post(this.authUrl, {
-      grant_type: 'password',
-      client_id: '2',
-      client_secret: 'j1mz1isKiXTjD4b59GakVf269SRIuo8efSVVB30E',
-      username: e,
-      password: p,
-      scope: ''
-    }, this.options);
+      email: email,
+      password: password,
+    });
   }
 
   /**
    * Revoke the authenticated user token
    */
-  logout() {
-    this.options.headers.Authorization = 'Bearer ' + localStorage.getItem('access_token');
-    return this.http.get(this.apiUrl + '/token/revoke', this.options);
+  logout(allDevice: boolean) {
+
+    const user:any = localStorage.getItem('access_token');
+    const userObj = JSON.parse(user);
+    const token = userObj.token;
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    return this.http.post('http://localhost:8000/api/logout', {allDevice: allDevice}, {headers: headers});
+
+
+    // this.options.headers.Authorization = 'Bearer ' + localStorage.getItem('access_token');
+    // return this.http.get(this.apiUrl + '/token/revoke', this.options);
   }
 
 }
