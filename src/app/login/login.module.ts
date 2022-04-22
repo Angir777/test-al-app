@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoginComponent } from './login.component';
 import { Routes, RouterModule } from '@angular/router';
-import { GuestGuardService } from '../services/guest-guard.service';
+import { GuestGuardService } from '../shared/services/auth/guest-guard.service';
 
 const routes: Routes = [
   {
