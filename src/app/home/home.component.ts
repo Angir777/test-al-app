@@ -44,6 +44,11 @@ export class HomeComponent implements OnInit {
     this.authService.logout(this.checkbox).subscribe((res) => {
       console.log(res);
       localStorage.removeItem('access_token');
+
+        //this.authService.toggleLogin(false);
+        //https://github.com/subhadipghorui/laravel-angular-api-authentication-full
+        //https://www.youtube.com/watch?v=Ad3lPnEN0fY&list=PL397yT3D1n9ipqiMZug6mdPIczG2fmfjK&index=5&ab_channel=myiotlab
+
       this.router.navigate(['/login']);
     }, (err) => {
       console.log(err);
