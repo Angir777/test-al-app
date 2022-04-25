@@ -31,6 +31,10 @@
                     <p class="card-text">{{ post.body }}</p>
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="btn-group">
+                            <!-- <a [routerLink]="[post.id]" class="btn btn-sm btn-outline-secondary">View 1</a> -->
+
+                            <button type="button" class="btn btn-sm btn-outline-info" (click)="showSinglePost(post)">View</button>
+
                             <button type="button" class="btn btn-sm btn-outline-primary" (click)="openModal(template, post)">Edit</button>
                             <button type="button" class="btn btn-sm btn-outline-danger" (click)="deletePost2(post)">Delete</button>
                         </div>

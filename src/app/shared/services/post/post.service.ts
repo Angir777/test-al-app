@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of, takeLast } from 'rxjs';
 import { IPost } from 'src/app/post/post';
@@ -45,6 +45,12 @@ export class PostService {
   deletePost(post: Post) {
     const index = this.posts.findIndex(x => x.id === post.id);
     this.posts.splice(index, 1);
+  }
+
+  getPostById2(id:number): Observable<HttpResponse<IPost>> {
+    return this.http.get<IPost>(`${this._url}/${id}`, {
+      observe: 'response',
+    });
   }
 
   addPost(post: Post) {
