@@ -21,9 +21,7 @@ export class GuestGuardService {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ) {
-    if (
-      !localStorage.getItem('access_token')
-    ) { return true; }
+    if (!localStorage.getItem('access_token')) { return true; }
     this.router.navigateByUrl('/');
     return false;
   }

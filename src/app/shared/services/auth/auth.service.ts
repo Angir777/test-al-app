@@ -38,7 +38,7 @@ export class AuthService {
   // sprawdza czy user jest zalogowany i zwraca true / false, inne podejście bo mam jeszcze jedno w tym projekcie z AuthGuardService
   // to dobre jak podstrona ma być dostępna, ale jakaś funkcjonalność ma być zablokowana
   status() {
-    const localData:any = localStorage.getItem('access_token');
+    const localData: any = localStorage.getItem('access_token');
     if(!localData){
       this.isLoggedIn.next(false);
       console.log("User not logged in!");
@@ -62,7 +62,7 @@ export class AuthService {
    * @returns 
    */
   login(email: string, password: string) {
-    return this.http.post(this.authUrl, {
+    return this.http.post('http://localhost:8000/api/login', {
       email: email,
       password: password
     });
@@ -73,7 +73,7 @@ export class AuthService {
    */
   logout(allDevice: boolean) {
 
-    const user:any = localStorage.getItem('access_token');
+    const user: any = localStorage.getItem('access_token');
     const userObj = JSON.parse(user);
     const token = userObj.token;
 

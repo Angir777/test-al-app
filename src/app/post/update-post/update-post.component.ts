@@ -41,7 +41,7 @@ export class UpdatePostComponent implements OnInit {
     // ustalenie czy jest to dodanie nowego postu czy edycja poprzez istnienie id lub nie
     this.isAddMode = !this.id;
     
-    console.log('Nowy post: ' + this.isAddMode);
+    //console.log('Nowy post: ' + this.isAddMode);
 
     if (this.isAddMode) {
       this.patchFormValue(0, 'Tytuł nowego artykułu', 'Jakiś opis');

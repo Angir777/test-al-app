@@ -46,6 +46,8 @@ export class HomeComponent implements OnInit {
         // https://github.com/subhadipghorui/laravel-angular-api-authentication-full
         // https://www.youtube.com/watch?v=Ad3lPnEN0fY&list=PL397yT3D1n9ipqiMZug6mdPIczG2fmfjK&index=5&ab_channel=myiotlab
 
+        this.authService.toggleLogin(false);
+
         this.router.navigate(['/login']);
       },
       error: (error) => {
