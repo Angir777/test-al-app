@@ -16,6 +16,8 @@ export class LoginComponent implements OnInit {
    form: FormGroup;
    loading: boolean = false;
    errors: boolean = false;
+   email!: string;
+   password!: string;
 
   constructor(
     fb: FormBuilder,
@@ -45,35 +47,31 @@ export class LoginComponent implements OnInit {
 
     this.loading = true;
     this.errors = false;
+    this.email = this.form.value.email;
+    this.password = this.form.value.password;
 
-    const email = this.form.value.email;
-    const password = this.form.value.password;
-
-      // nie działa po wynienieniu do serwisu
-
+    // nie działa po wyniesieniu do serwisu
+    // this.authService.login(this.email, this.password)
     this.http.post('http://localhost:8000/api/login', {
-      email: email,
-      password: password,
-    }).subscribe((res: any)=>{
-      this.loading = false;
-      //console.log(res);
-      localStorage.setItem('access_token', JSON.stringify(res))
-
-      // redirect
-      this.router.navigate(['/']);
-    },
-    err=>{
-      console.log(err);
-      this.loading = false;
-      this.errors = true;
+      email: this.email,
+      password: this.password,
+    })
+    .subscribe({
+      next: (response) => {
+        this.loading = false;
+        // utworzenie klucza w aplikacji (google>Application>access_token)
+        localStorage.setItem('access_token', JSON.stringify(response))
+        // redirect
+        this.router.navigate(['/']);
+      },
+      error: (error) => {
+        console.log(error);
+        this.loading = false;
+        this.errors = true;
+      },
+      complete: () => {},
     });
-  }
 
-  /**
-   * Getter for the form controls
-   */
-  get controls() {
-    return this.form.controls;
   }
 
 }

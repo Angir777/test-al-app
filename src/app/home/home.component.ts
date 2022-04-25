@@ -26,41 +26,33 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     const user:any = localStorage.getItem('access_token');
     const userObj = JSON.parse(user);
-
-    const token = userObj.token;
-
+    console.log(userObj);
     this.user = userObj;
-    //console.log(userObj);
-
+    
+    // const token = userObj.token;
   }
 
   /**
    * Logout the user and revoke his token
    */
   logout(): void {
+    this.authService.logout(this.checkbox)
+    .subscribe({
+      next: (response) => {
+        console.log(response);
+        localStorage.removeItem('access_token');
 
-    //console.log(this.checkbox);
+        // this.authService.toggleLogin(false);
+        // https://github.com/subhadipghorui/laravel-angular-api-authentication-full
+        // https://www.youtube.com/watch?v=Ad3lPnEN0fY&list=PL397yT3D1n9ipqiMZug6mdPIczG2fmfjK&index=5&ab_channel=myiotlab
 
-    this.authService.logout(this.checkbox).subscribe((res) => {
-      console.log(res);
-      localStorage.removeItem('access_token');
-
-        //this.authService.toggleLogin(false);
-        //https://github.com/subhadipghorui/laravel-angular-api-authentication-full
-        //https://www.youtube.com/watch?v=Ad3lPnEN0fY&list=PL397yT3D1n9ipqiMZug6mdPIczG2fmfjK&index=5&ab_channel=myiotlab
-
-      this.router.navigate(['/login']);
-    }, (err) => {
-      console.log(err);
-    })
-
-    // this.loading = true;
-    // this.authService.logout()
-    //   .subscribe(() => {
-    //     this.loading = false;
-    //     localStorage.removeItem('access_token');
-    //     this.router.navigate(['/login']);
-    //   });
+        this.router.navigate(['/login']);
+      },
+      error: (error) => {
+        console.log(error);
+      },
+      complete: () => {},
+    });
   }
 
 }

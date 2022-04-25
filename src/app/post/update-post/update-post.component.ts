@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Post } from 'src/app/shared/models/post';
+import { AuthService } from 'src/app/shared/services/auth/auth.service';
 import { PostService } from 'src/app/shared/services/post/post.service';
 
 @Component({
