@@ -14,7 +14,7 @@ export class ShowPostComponent implements OnInit {
 
   paczka: string = '';
 
-  post!: any;
+  //post!: any;
 
   single!: any;
   public posts2 = [] as any;
