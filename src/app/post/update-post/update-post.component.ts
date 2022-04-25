@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Post } from 'src/app/shared/models/post';
-import { AuthService } from 'src/app/shared/services/auth/auth.service';
 import { PostService } from 'src/app/shared/services/post/post.service';
+import { IPost } from '../post';
 
 @Component({
   selector: 'app-update-post',
@@ -23,6 +23,8 @@ export class UpdatePostComponent implements OnInit {
   post!: Post;
   form!: FormGroup;
 
+  public selectedPost = <IPost>{};
+
   constructor(
     // W konstruktorze deklarujemy z czego będziemy korzystali
     private postService: PostService,
@@ -41,15 +43,15 @@ export class UpdatePostComponent implements OnInit {
     // ustalenie czy jest to dodanie nowego postu czy edycja poprzez istnienie id lub nie
     this.isAddMode = !this.id;
     
-    //console.log('Nowy post: ' + this.isAddMode);
+    console.log('Nowy post: ' + this.isAddMode);
 
     if (this.isAddMode) {
-      this.patchFormValue(0, 'Tytuł nowego artykułu', 'Jakiś opis');
+      this.patchFormValue(0, 'Tytuł', 'Treść');
     } else {
       // Pobranie postu po id (rzutowanie stringa na number)
-      const post = this.postService.getPostById(Number(this.id));
+      //const post = this.postService.getPostById(Number(this.id));
       // Wstawienie danych do forma (rzutowanie stringa na stringa ?? )
-      this.patchFormValue(Number(this.id), String(post?.title), String(post?.text));
+      //this.patchFormValue(Number(this.id), String(post?.title), String(post?.text));
     }
   }
 
@@ -57,15 +59,15 @@ export class UpdatePostComponent implements OnInit {
     this.form = this.formBuilder.group({
       id: [null],
       title: [null, [Validators.required]],
-      text: [null, [Validators.required]]
+      body: [null, [Validators.required]]
     });
   }
 
-  patchFormValue(id:number, title: string, text: string) {
+  patchFormValue(id:number, title: string, body: string) {
     this.form.patchValue({
       id: id,
       title: title,
-      text: text
+      body: body
     });
   }
 
@@ -77,7 +79,22 @@ export class UpdatePostComponent implements OnInit {
     } else {
       if (this.isAddMode) {
         // utworzenie nowego posta poprzez serwis
-        this.postService.addPost(this.createFromForm());
+        
+        console.log(this.createFromForm());
+
+        this.postService.add(this.createFromForm())
+        .subscribe({
+          next: (response) => {
+            console.log(response);
+            this.router.navigate(['/posts']);
+          },
+          error: (error) => {
+            console.log(error);
+          },
+          complete: () => {},
+        });
+
+
         // resetowanie formularza
         this.form.reset();
         // przekierowanie na postronę z postami
@@ -95,12 +112,11 @@ export class UpdatePostComponent implements OnInit {
   }
 
   // Nowy obiek postu
-  createFromForm(): Post {
-    const post: Post = {
+  createFromForm(): IPost {
+    const post: IPost = {
       id: 0,
       title: this.form.get('title')?.value,
-      text: this.form.get('text')?.value,
-      isVisible: true
+      body: this.form.get('body')?.value
     }
     return post;
   }

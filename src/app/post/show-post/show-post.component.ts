@@ -10,6 +10,7 @@ import { PostService } from 'src/app/shared/services/post/post.service';
   styleUrls: ['./show-post.component.scss']
 })
 export class ShowPostComponent implements OnInit {
+  // id z routingu
   id!: string;
 
   paczka: string = '';
@@ -17,7 +18,7 @@ export class ShowPostComponent implements OnInit {
   //post!: any;
 
   single!: any;
-  public posts2 = [] as any;
+  //public posts2 = [] as any;
   error: string = '';
 
   constructor(

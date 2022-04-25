@@ -14,15 +14,18 @@ const routes: Routes = [
   },
   {
     path: 'new',
-    component: UpdatePostComponent
+    component: UpdatePostComponent,
+    canActivate: [ AuthGuardService ]
   },
   {
     path: ':id',
-    component: ShowPostComponent
+    component: ShowPostComponent,
+    canActivate: [ AuthGuardService ]
   },
   {
     path: ':id/edit',
-    component: UpdatePostComponent
+    component: UpdatePostComponent,
+    canActivate: [ AuthGuardService ]
   }
 ];
 
