@@ -1,4 +1,3 @@
-import { HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { finalize } from 'rxjs';
@@ -13,7 +12,7 @@ import { EventManagerService } from '../shared/services/event-manager/event-mana
 export class HomeComponent implements OnInit {
 
   // Variables
-  user:any;
+  user: any;
   accessToken: any;
   loading: boolean = false;
   checkbox: boolean = false;
@@ -30,6 +29,7 @@ export class HomeComponent implements OnInit {
     const user:any = localStorage.getItem('user_info');
     const userObj = JSON.parse(user);
     
+    // Zostawione dlaciekawości gdy wyciągamy infomracje z user_info
     // const userObj = JSON.parse(user);
     // const token_expires_at = new Date(userObj.token_expires_at);
     // const current_date = new Date();
@@ -56,6 +56,7 @@ export class HomeComponent implements OnInit {
     )
     .subscribe({
       next: (response) => {
+        // https://www.youtube.com/watch?v=cw98ztmwJ2s&ab_channel=CodeSensei
         // https://github.com/subhadipghorui/laravel-angular-api-authentication-full
         // https://www.youtube.com/watch?v=Ad3lPnEN0fY&list=PL397yT3D1n9ipqiMZug6mdPIczG2fmfjK&index=5&ab_channel=myiotlab
         // login status event
@@ -70,8 +71,7 @@ export class HomeComponent implements OnInit {
       },
       error: (error) => {
         console.log(error);
-      },
-      complete: () => {},
+      }
     });
   }
 

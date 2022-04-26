@@ -2,17 +2,8 @@ import { NgModule } from '@angular/core';
 import { HomeComponent } from './home.component';
 
 import { CommonModule } from '@angular/common';
-import { Routes, RouterModule } from '@angular/router';
-import { AuthGuardService } from '../shared/services/auth/auth-guard.service';
+import { HomeRoutingModule } from './home-routing.module';
 import { FormsModule } from '@angular/forms';
-
-const routes: Routes = [
-  {
-    path: '',
-    component: HomeComponent,
-    canActivate: [ AuthGuardService ]
-  }
-];
 
 @NgModule({
   declarations: [
@@ -20,7 +11,7 @@ const routes: Routes = [
   ],
   imports: [
     CommonModule,
-    RouterModule.forChild(routes),
+    HomeRoutingModule,
     FormsModule
   ]
 })

@@ -1,42 +1,23 @@
 <div class="row">
     <div class="col-md-3"></div>
     <div class="col-md-6">
+
         <h1 *ngIf="isAddMode">Dodaj post</h1>
         <h1 *ngIf="!isAddMode">Edytuj post</h1>
-        <!-- <form (ngSubmit)="formGroupSubmit()" [formGroup]="form">
-            <ng-container *ngIf="!isAddMode">
-                <input type="hidden" formControlName="id">
-            </ng-container>
-            <div class="mb-3">
-                <input type="text" class="form-control" formControlName="title">
-                <small class="form-text text-danger" *ngIf="form.get('title')?.errors?.['required']">
-                    Pole jest wymagane
-                </small>
-            </div>
-            <div class="mb-3">
-                <input type="text" class="form-control" formControlName="text">
-                <small class="form-text text-danger" *ngIf="form.get('text')?.errors?.['required']">
-                    Pole jest wymagane
-                </small>
-            </div>
-            <button type="submit" class="btn btn-primary">
-                <ng-container *ngIf="isAddMode">Dodaj post</ng-container>
-                <ng-container *ngIf="!isAddMode">Zapisz zmiany</ng-container>
-            </button>
-        </form> -->
+
         <form (ngSubmit)="formGroupSubmit()" [formGroup]="form">
             <ng-container *ngIf="!isAddMode">
                 <input type="hidden" formControlName="id">
             </ng-container>
             <div class="mb-3">
                 <input type="text" class="form-control" formControlName="title">
-                <small class="form-text text-danger" *ngIf="form.get('title')?.errors?.['required']">
+                <small class="form-text text-danger" *ngIf="form.get('title')?.errors?.['required'] && showError">
                     Pole jest wymagane
                 </small>
             </div>
             <div class="mb-3">
-                <input type="text" class="form-control" formControlName="body">
-                <small class="form-text text-danger" *ngIf="form.get('body')?.errors?.['required']">
+                <textarea class="form-control" formControlName="body"></textarea>
+                <small class="form-text text-danger" *ngIf="form.get('body')?.errors?.['required'] && showError">
                     Pole jest wymagane
                 </small>
             </div>
@@ -45,6 +26,7 @@
                 <ng-container *ngIf="!isAddMode">Zapisz zmiany</ng-container>
             </button>
         </form>
+
     </div>
     <div class="col-md-3"></div>
 </div>

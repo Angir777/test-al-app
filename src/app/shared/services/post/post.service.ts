@@ -73,7 +73,7 @@ export class PostService {
   /**
    * Pobranie wybranego postu po id
    */
-  getPostById2(id:number): Observable<HttpResponse<IPost>> {
+  getPostById(id:number): Observable<HttpResponse<IPost>> {
     const headers: HttpHeaders = new HttpHeaders({
       'Authorization': `Bearer ${this.authService.token}`
     });

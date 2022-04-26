@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { IPost } from 'src/app/post/post';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'

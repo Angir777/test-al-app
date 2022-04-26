@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../shared/services/auth/auth.service';
-
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { EventManagerService } from '../shared/services/event-manager/event-manager.service';
 
 @Component({
@@ -24,7 +22,6 @@ export class LoginComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private authService: AuthService,
-    private http: HttpClient,
     private eventManager: EventManagerService,
   ) {
     // Wywołujemy funkcje na start - Utworzy nam formularz
@@ -67,8 +64,7 @@ export class LoginComponent implements OnInit {
         console.log(error);
         this.loading = false;
         this.errors = true;
-      },
-      complete: () => {},
+      }
     });
 
   }

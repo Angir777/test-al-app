@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Post } from 'src/app/shared/models/post';
-import { EventManagerService } from 'src/app/shared/services/event-manager/event-manager.service';
+import { ActivatedRoute } from '@angular/router';
 import { PostService } from 'src/app/shared/services/post/post.service';
 
 @Component({
@@ -10,49 +8,32 @@ import { PostService } from 'src/app/shared/services/post/post.service';
   styleUrls: ['./show-post.component.scss']
 })
 export class ShowPostComponent implements OnInit {
-  // id z routingu
+  
+  // Variables
   id!: string;
-
-  paczka: string = '';
-
-  //post!: any;
-
-  single!: any;
-  //public posts2 = [] as any;
+  post!: any;
   error: string = '';
+  paczka: string = '';
 
   constructor(
     private postService: PostService,
-    private router: Router,
-    private route: ActivatedRoute,
-    private eventManager: EventManagerService,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
+    // Pobranie id z url
     this.id = this.route.snapshot.params['id'];
-    //this.post = this.postService.getPostById(Number(this.id));
-    
-
-    // Tak wyświetlić pojedyńczy post
-    // this.postService.getPostById2(Number(this.id)).subscribe(response => this.single = response.body);
+    // Wyświetlanie pojedyńczego postu po id
     this.postService
-    .getPostById2(Number(this.id))
-    .pipe(
-        //.pipe Wykona się zawsze, czy to sukces czy error
-    )
+    .getPostById(Number(this.id))
     .subscribe({
       next: (response) => {
-        this.single = response.body;
-        console.log('Sukces');
+        this.post = response.body;
       },
       error: (error) => {
-        console.log('Error');
         this.error = 'Error';
-      },
-      complete: () => {},
+      }
     });
-
-    
   }
 
   odbierzPaczke(message: string) {

@@ -2,8 +2,6 @@ import { Component, OnInit, TemplateRef } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { Post } from 'src/app/shared/models/post';
-import { EventManagerService } from 'src/app/shared/services/event-manager/event-manager.service';
 import { PostService } from 'src/app/shared/services/post/post.service';
 import { IPost } from '../post';
 
@@ -14,6 +12,7 @@ import { IPost } from '../post';
 })
 export class PostsComponent implements OnInit {
 
+  // Variables
   public posts = [] as any;
   public selectedPost = <IPost>{};
   public modalTitle = '';
@@ -23,19 +22,15 @@ export class PostsComponent implements OnInit {
   public showError = false;
   modalRef?: BsModalRef;
 
-  // posts: Post[] = [];
-
   constructor(
     private postService: PostService,
     private modalService: BsModalService,
-    private eventManager: EventManagerService,
     private router: Router
   ) {
-    this.getList(); // by ładowało posty gdy przechodzi z zakładki update-post
+    this.getList(); // By ładowało posty gdy przechodzi z zakładki update-post
   }
 
   ngOnInit(): void {
-    //this.getList();
   }
 
   /**
@@ -49,20 +44,35 @@ export class PostsComponent implements OnInit {
       },
       error: (error) => {
         console.log(error);
-      },
-      complete: () => {},
+      }
     });
   }
 
-  deletePost2(post:IPost){
-    this.postService.delete(post).subscribe(response => this.getList());
+  /**
+   * Usuwa wybrany post
+   */
+  deletePost(post:IPost){
+    this.postService.delete(post)
+    .subscribe({
+      next: (response) => {
+        this.getList();
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    });
   }
 
-  // przesłanie informacji o konkretnym poście do innego komponentu
+  /**
+   * Przesłanie informacji o konkretnym poście do innego komponentu
+   */
   showSinglePost(post:IPost){
     this.router.navigate(['/posts/'+post.id]);
   }
 
+  /**
+   * Okno modalne
+   */
   openModal(template: TemplateRef<any>, post?:IPost) {
     if(post){
       this.modalTitle = 'Edit post';
@@ -78,6 +88,9 @@ export class PostsComponent implements OnInit {
     this.modalRef = this.modalService.show(template);
   }
 
+  /**
+   * Zapis
+   */
   save(){
     if(!this.postTitle.value || !this.postBody.value){
       this.showError = true;
@@ -89,26 +102,43 @@ export class PostsComponent implements OnInit {
 
     if(this.btnTitle == 'Update'){
       this.postService.update(this.selectedPost)
-      .subscribe(response => {
-        this.getList();
-        this.reset();
-        this.showError = false;
-        this.modalRef?.hide();
+      .subscribe({
+        next: (response) => {
+          this.addOrUpdateNextSteps();
+        },
+        error: (error) => {
+          console.log(error);
+        }
       });
     }else{
       this.postService.add(this.selectedPost)
-      .subscribe(response => {
-        this.getList();
-        this.reset();
-        this.showError = false;
-        this.modalRef?.hide();
+      .subscribe({
+        next: (response) => {
+          this.addOrUpdateNextSteps();
+        },
+        error: (error) => {
+          console.log(error);
+        }
       });
     }
   }
 
+  /**
+   * Reset inputów
+   */
   reset(){
     this.postTitle.reset();
     this.postBody.reset();
+  }
+
+  /**
+   * AddOrUpdateNextSteps
+   */
+  addOrUpdateNextSteps(){
+    this.getList();
+    this.reset();
+    this.showError = false;
+    this.modalRef?.hide();
   }
 
 }

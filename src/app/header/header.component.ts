@@ -17,7 +17,7 @@ export class HeaderComponent implements OnInit {
     private authService: AuthService,
   ) {
     // Jeśli odświerzę stronę to mi nie zniknie w menu link 'Nowy post'
-    this.loggedIn = this.authService.isAuthenticated;
+    this.loggedIn = this.isAuth();
   }
 
   ngOnInit(): void {
@@ -44,9 +44,9 @@ export class HeaderComponent implements OnInit {
   }
 
   // Sprawdza czy user jest zalogowany (czy w localStorage istnieje 'user_info') poprzez funkcję
-  // isAuth(): boolean{
-  //   return this.authService.isAuthenticated;
-  // }
+  isAuth(): boolean{
+    return this.authService.isAuthenticated;
+  }
 
   emmitEventToEventManager() {
     this.eventManager.broadcastEvent({
