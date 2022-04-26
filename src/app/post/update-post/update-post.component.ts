@@ -17,12 +17,11 @@ export class UpdatePostComponent implements OnInit {
 
   // Deklarujemy sonie zmienne pptrzebne do wyśwuetlenia tekstu w formularzu
   title: string = '';
-  text: string = '';
+  body: string = '';
 
   // Dając znak '!' dajemy znać ze zmienne moga być puste/nie przypisane
   post!: Post;
   form!: FormGroup;
-
   single!: any;
 
   public selectedPost = <IPost>{};
@@ -35,8 +34,7 @@ export class UpdatePostComponent implements OnInit {
     private route: ActivatedRoute
   ) {
     // Wywołujemy funkcje na start
-    this.createForm();                    // Utworzy nam formularz
-    //this.patchFormValue('Tytuł artykułu', 'Jakiś opis'); // Ustawi nam wartości na start - w update musza to być wartości do edycji (to do zrobienia)
+    this.createForm(); // Utworzy nam formularz
   }
 
   ngOnInit(): void {
@@ -44,20 +42,16 @@ export class UpdatePostComponent implements OnInit {
     this.id = this.route.snapshot.params['id'];
     // ustalenie czy jest to dodanie nowego postu czy edycja poprzez istnienie id lub nie
     this.isAddMode = !this.id;
-    
-    console.log('Nowy post: ' + this.isAddMode);
 
     if (this.isAddMode) {
       this.patchFormValue(0, 'Tytuł', 'Treść');
     } else {
       // Pobranie postu po id (rzutowanie stringa na number)
-      //const post = this.postService.getPostById(Number(this.id));
       this.postService.getPostById2(Number(this.id))
       .subscribe({
         next: (response) => {
+          // To co odbieramy
           this.single = response.body;
-          //console.log(this.single?.title);
-
           // Wstawienie danych do forma (rzutowanie stringa na stringa ?? )
           this.patchFormValue(Number(this.id), String(this.single?.title), String(this.single?.body));
         },
@@ -66,7 +60,6 @@ export class UpdatePostComponent implements OnInit {
         },
         complete: () => {},
       });
-     
     }
   }
 
@@ -94,9 +87,6 @@ export class UpdatePostComponent implements OnInit {
     } else {
       if (this.isAddMode) {
         // utworzenie nowego posta poprzez serwis
-        
-        console.log(this.createFromForm());
-
         this.postService.add(this.createFromForm())
         .subscribe({
           next: (response) => {
@@ -108,18 +98,14 @@ export class UpdatePostComponent implements OnInit {
           },
           complete: () => {},
         });
-
-
         // resetowanie formularza
         this.form.reset();
         // przekierowanie na postronę z postami
         this.router.navigateByUrl('/posts');
       } else {
+        // zaktualizowane informacje z formularza
         this.single.title = this.form.get('title')?.value;
         this.single.body = this.form.get('body')?.value;
-
-        console.log(this.single);
-
         // edycja istniejącego
         this.postService.update(this.single)
         .subscribe({
@@ -129,9 +115,7 @@ export class UpdatePostComponent implements OnInit {
           error: (error) => {
             console.log(error);
           },
-          complete: () => {},
         });
-        
       }
     }
   }

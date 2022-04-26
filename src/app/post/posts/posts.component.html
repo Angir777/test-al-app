@@ -7,24 +7,8 @@
     </div>
 
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-    
-        <!-- <div *ngFor="let post of posts.slice(-3).reverse(); let i = index" class="col">
-            <div id="{{ i }}" class="card shadow-sm">
-                <div class="card-body">
-                    <h2>{{ post.id }} | {{ post.title }}</h2>
-                    <p class="card-text">{{ post.text }}</p>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="btn-group">
-                            <a [routerLink]="[post.id]" class="btn btn-sm btn-outline-secondary">View</a>
-                            <a [routerLink]="[post.id, 'edit']" class="btn btn-sm btn-outline-primary">Edit</a>
-                            <button type="button" class="btn btn-sm btn-outline-danger" (click)="deletePost(post)">Delete</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> -->
-
-        <div *ngFor="let post of posts2; let i = index" class="col">
+        
+        <div *ngFor="let post of posts; let i = index" class="col">
             <div id="{{ i }}" class="card shadow-sm">
                 <div class="card-body">
                     <h2>{{ post.id }} | {{ post.title }}</h2>

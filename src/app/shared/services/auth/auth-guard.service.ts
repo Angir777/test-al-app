@@ -21,22 +21,9 @@ export class AuthGuardService {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ) {
-    if (localStorage.getItem('access_token')) { return true; }
-    localStorage.removeItem('access_token');
+    if (localStorage.getItem('user_info')) { return true; }
+    localStorage.removeItem('user_info');
     this.router.navigateByUrl('/login');
     return false;
   }
-
-  // inny przykład:
-  // canActivate(
-  //   route: ActivatedRouteSnapshot,
-  //   state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-  //  return this.auth.status().pipe(take(1),map((loggedIn:boolean)=>{
-  //    if(loggedIn){
-  //      return true;
-  //    }else{
-  //     return this.router.createUrlTree(['/login']);
-  //    }
-  //  }));
-  // }
 }

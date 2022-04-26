@@ -10,21 +10,20 @@ import { EventManagerService } from '../shared/services/event-manager/event-mana
 export class HeaderComponent implements OnInit {
 
   test: any = {};
-
   loggedIn:boolean = false;
 
   constructor(
     private eventManager: EventManagerService,
     private authService: AuthService,
-  ) { }
+  ) {
+    // Jeśli odświerzę stronę to mi nie zniknie w menu link 'Nowy post'
+    this.loggedIn = this.authService.isAuthenticated;
+  }
 
   ngOnInit(): void {
-
-    // sprawdza czy user jest zalogowany i zwraca true / false, inne podejście bo mam jeszcze jedno w tym projekcie z AuthGuardService
-    // to dobre jak podstrona ma być dostępna, ale jakaś funkcjonalność ma być zablokowana
-    this.authService.status().subscribe((res)=>{
-      console.log(res);
-      this.loggedIn = res;
+    // Sprawdza czy user jest zalogowany (czy w localStorage istnieje 'user_info') poprzez event
+    this.eventManager.subscribeEvent('ON_AUTH_CHANGED', (res: any) => {
+      this.loggedIn = res.content.isLogin;
     });
 
     /**
@@ -43,6 +42,11 @@ export class HeaderComponent implements OnInit {
       this.emmitEventToEventManager();
     }, 5000);
   }
+
+  // Sprawdza czy user jest zalogowany (czy w localStorage istnieje 'user_info') poprzez funkcję
+  // isAuth(): boolean{
+  //   return this.authService.isAuthenticated;
+  // }
 
   emmitEventToEventManager() {
     this.eventManager.broadcastEvent({

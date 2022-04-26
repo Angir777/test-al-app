@@ -3,7 +3,7 @@
         <div class="col d-flex flex-row justify-content-center align-content-center pt-5 pb-5">
             <div class="card w-50">
                 <div class="card-body">
-                    <form [formGroup]="form" (submit)="login()">
+                    <form (submit)="login()" [formGroup]="form">
                         <h5 class="card-title">Authentication form</h5>
                         <div class="row" *ngIf="errors">
                             <div class="col">

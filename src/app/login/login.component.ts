@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../shared/services/auth/auth.service';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { EventManagerService } from '../shared/services/event-manager/event-manager.service';
 
 @Component({
   selector: 'app-login',
@@ -20,20 +21,16 @@ export class LoginComponent implements OnInit {
    password!: string;
 
   constructor(
-    fb: FormBuilder,
+    private formBuilder: FormBuilder,
     private router: Router,
     private authService: AuthService,
-    private http: HttpClient
+    private http: HttpClient,
+    private eventManager: EventManagerService,
   ) {
-    this.form = fb.group({
-      email: [
-        '',
-        [Validators.required, Validators.email]
-      ],
-      password: [
-        '',
-        Validators.required
-      ]
+    // Wywołujemy funkcje na start - Utworzy nam formularz
+    this.form = this.formBuilder.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required]]
     });
   }
 
@@ -43,24 +40,26 @@ export class LoginComponent implements OnInit {
   /**
    * Login the user based on the form values
    */
-   login(): void {
+  login(): void {
 
     this.loading = true;
     this.errors = false;
     this.email = this.form.value.email;
     this.password = this.form.value.password;
 
-    // nie działa po wyniesieniu do serwisu
-    // this.authService.login(this.email, this.password)
-    this.http.post('http://localhost:8000/api/login', {
-      email: this.email,
-      password: this.password,
-    })
+    this.authService.login(this.email, this.password)
     .subscribe({
       next: (response) => {
         this.loading = false;
-        // utworzenie klucza w aplikacji (google>Application>access_token)
-        localStorage.setItem('access_token', JSON.stringify(response))
+        // utworzenie klucza w aplikacji (google>Application>user_info)
+        localStorage.setItem('user_info', JSON.stringify(response))
+        // login status event
+        this.eventManager.broadcastEvent({
+          name: 'ON_AUTH_CHANGED',
+          content: {
+            isLogin: true,
+          }
+        })
         // redirect
         this.router.navigate(['/']);
       },

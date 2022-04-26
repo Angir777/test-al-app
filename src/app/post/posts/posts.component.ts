@@ -14,7 +14,7 @@ import { IPost } from '../post';
 })
 export class PostsComponent implements OnInit {
 
-  public posts2 = [] as any;
+  public posts = [] as any;
   public selectedPost = <IPost>{};
   public modalTitle = '';
   public btnTitle = '';
@@ -35,17 +35,23 @@ export class PostsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.postService.getPosts().subscribe(res => this.posts = res);
-
-    this.getList();
+    //this.getList();
   }
 
-  // deletePost(post: Post){
-  //   this.postService.deletePost(post);
-  // }
-
+  /**
+   * Pobiera wszystkie posty
+   */
   getList(){
-    this.postService.list().subscribe(response => this.posts2 = response);
+    this.postService.list()
+    .subscribe({
+      next: (response) => {
+        this.posts = response.body;
+      },
+      error: (error) => {
+        console.log(error);
+      },
+      complete: () => {},
+    });
   }
 
   deletePost2(post:IPost){
