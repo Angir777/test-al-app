@@ -30,7 +30,9 @@ export class PostsComponent implements OnInit {
     private modalService: BsModalService,
     private eventManager: EventManagerService,
     private router: Router
-  ) { }
+  ) {
+    this.getList(); // by ładowało posty gdy przechodzi z zakładki update-post
+  }
 
   ngOnInit(): void {
     // this.postService.getPosts().subscribe(res => this.posts = res);

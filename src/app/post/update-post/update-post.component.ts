@@ -23,6 +23,8 @@ export class UpdatePostComponent implements OnInit {
   post!: Post;
   form!: FormGroup;
 
+  single!: any;
+
   public selectedPost = <IPost>{};
 
   constructor(
@@ -50,8 +52,21 @@ export class UpdatePostComponent implements OnInit {
     } else {
       // Pobranie postu po id (rzutowanie stringa na number)
       //const post = this.postService.getPostById(Number(this.id));
-      // Wstawienie danych do forma (rzutowanie stringa na stringa ?? )
-      //this.patchFormValue(Number(this.id), String(post?.title), String(post?.text));
+      this.postService.getPostById2(Number(this.id))
+      .subscribe({
+        next: (response) => {
+          this.single = response.body;
+          //console.log(this.single?.title);
+
+          // Wstawienie danych do forma (rzutowanie stringa na stringa ?? )
+          this.patchFormValue(Number(this.id), String(this.single?.title), String(this.single?.body));
+        },
+        error: (error) => {
+          console.log('Error');
+        },
+        complete: () => {},
+      });
+     
     }
   }
 
@@ -100,13 +115,23 @@ export class UpdatePostComponent implements OnInit {
         // przekierowanie na postronę z postami
         this.router.navigateByUrl('/posts');
       } else {
-        const id = this.form.get('id')?.value;
-        const title = this.form.get('title')?.value;
-        const text = this.form.get('text')?.value;
+        this.single.title = this.form.get('title')?.value;
+        this.single.body = this.form.get('body')?.value;
+
+        console.log(this.single);
+
         // edycja istniejącego
-        this.postService.editPost(id, title, text);
-        // przekierowanie na postronę z postami
-        this.router.navigateByUrl('/posts');
+        this.postService.update(this.single)
+        .subscribe({
+          next: (response) => {
+            this.router.navigateByUrl('/posts');
+          },
+          error: (error) => {
+            console.log(error);
+          },
+          complete: () => {},
+        });
+        
       }
     }
   }
