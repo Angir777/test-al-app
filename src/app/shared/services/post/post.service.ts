@@ -19,7 +19,7 @@ export class PostService {
 
   /**
    * Pobiera wszystkie posty
-   * headers - przesyłamy token do api
+   * headers - przesyłamy token do api gdzie jest na routingu ->middleware('auth:api')
    * observe - odpowiedź z api
    */
   list():Observable<HttpResponse<IPost[]>> {

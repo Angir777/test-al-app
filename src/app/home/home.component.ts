@@ -29,8 +29,19 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     const user:any = localStorage.getItem('user_info');
     const userObj = JSON.parse(user);
-    // console.log(userObj);
-    this.user = userObj;
+    
+    // const userObj = JSON.parse(user);
+    // const token_expires_at = new Date(userObj.token_expires_at);
+    // const current_date = new Date();
+    // if(token_expires_at > current_date){
+    //   this.isLoggedIn.next(true);
+    // }else{
+    //   this.isLoggedIn.next(false);
+    //   console.log("Token Exires");
+    // }
+
+    // Potrzebne do wyświetlania 'Hello UserName'
+    this.user = userObj.body;
   }
 
   /**

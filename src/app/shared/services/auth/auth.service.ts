@@ -9,9 +9,6 @@ import { IPost } from 'src/app/post/post';
 })
 export class AuthService {
 
-  // Variables
-  private isLoggedIn = new BehaviorSubject<boolean>(false);
-
   /**
    * Constructor
    * @param http The http client object
@@ -19,14 +16,14 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private router: Router,
-  ) {
+  ) { }
 
-  }
-
+  // Get token
   get token(): any {
     return JSON.parse(localStorage.getItem('user_info') || '')?.body.token;
   }
 
+  // Get info aout if user is logged
   get isAuthenticated(): boolean {
     const userInfo: any = localStorage.getItem('user_info');
     if(!userInfo){
@@ -34,26 +31,6 @@ export class AuthService {
     }
     return true
   }
-
-  // sprawdza czy user jest zalogowany i zwraca true / false, inne podejście bo mam jeszcze jedno w tym projekcie z AuthGuardService
-  // to dobre jak podstrona ma być dostępna, ale jakaś funkcjonalność ma być zablokowana
-  // status() {
-  //   const localData: any = localStorage.getItem('user_info');
-  //   if(!localData){
-  //     this.isLoggedIn.next(false);
-  //     console.log("User not logged in!");
-  //   }
-  //   const userObj = JSON.parse(localData);
-  //   const token_expires_at = new Date(userObj.token_expires_at);
-  //   const current_date = new Date();
-  //   if(token_expires_at > current_date){
-  //     this.isLoggedIn.next(true);
-  //   }else{
-  //     this.isLoggedIn.next(false);
-  //     console.log("Token Exires");
-  //   }
-  //   return this.isLoggedIn.asObservable();
-  // }
 
   /**
    * Logowanie - nie działa tutaj poprzez serwis
