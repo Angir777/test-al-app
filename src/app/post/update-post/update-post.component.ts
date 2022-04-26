@@ -32,7 +32,7 @@ export class UpdatePostComponent implements OnInit {
     private route: ActivatedRoute
   ) {
     // Wywołujemy funkcje na start
-    this.createForm(); // Utworzy nam formularz
+    this.initForm(); // Utworzy nam formularz
   }
 
   ngOnInit(): void {
@@ -58,7 +58,7 @@ export class UpdatePostComponent implements OnInit {
     }
   }
 
-  createForm() {
+  initForm() {
     this.form = this.formBuilder.group({
       id: [null],
       title: [null, [Validators.required]],

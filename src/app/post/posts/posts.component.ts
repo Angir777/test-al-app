@@ -21,6 +21,7 @@ export class PostsComponent implements OnInit {
   public postBody = new FormControl('', Validators.required);
   public showError = false;
   modalRef?: BsModalRef;
+  deletedPost = [] as any;
 
   constructor(
     private postService: PostService,
@@ -55,7 +56,7 @@ export class PostsComponent implements OnInit {
     this.postService.delete(post)
     .subscribe({
       next: (response) => {
-        this.getList();
+        this.addOrUpdateNextSteps();
       },
       error: (error) => {
         console.log(error);
@@ -71,9 +72,12 @@ export class PostsComponent implements OnInit {
   }
 
   /**
-   * Okno modalne
+   * Okno modalne od dodawania i edytowania
    */
-  openModal(template: TemplateRef<any>, post?:IPost) {
+  openModalAddOrUpdate(template: TemplateRef<any>, post?:IPost) {
+
+    console.log(template);
+
     if(post){
       this.modalTitle = 'Edit post';
       this.selectedPost = post;
@@ -85,6 +89,14 @@ export class PostsComponent implements OnInit {
       this.btnTitle = 'Add';
       this.reset();
     }
+    this.modalRef = this.modalService.show(template);
+  }
+
+  /**
+   * Okno modalne od usuwania
+   */
+   openModalDelete(template: TemplateRef<any>, post:IPost) {
+    this.deletedPost = post;
     this.modalRef = this.modalService.show(template);
   }
 

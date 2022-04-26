@@ -12,13 +12,13 @@
             <div class="mb-3">
                 <input type="text" class="form-control" formControlName="title">
                 <small class="form-text text-danger" *ngIf="form.get('title')?.errors?.['required'] && showError">
-                    Pole jest wymagane
+                    Title field is required
                 </small>
             </div>
             <div class="mb-3">
                 <textarea class="form-control" formControlName="body"></textarea>
                 <small class="form-text text-danger" *ngIf="form.get('body')?.errors?.['required'] && showError">
-                    Pole jest wymagane
+                    Body field is required
                 </small>
             </div>
             <button type="submit" class="btn btn-primary">

@@ -2,7 +2,7 @@
 
     <div class="row mb-3">
         <div class="col-12">
-            <button type="button" class="btn btn-sm btn-outline-primary" (click)="openModal(template)">Add</button>
+            <button type="button" class="btn btn-sm btn-outline-primary" (click)="openModalAddOrUpdate(template)">Add</button>
         </div>
     </div>
 
@@ -17,8 +17,9 @@
                         <div class="btn-group">
                             <!-- <a [routerLink]="[post.id]" class="btn btn-sm btn-outline-secondary">View 1</a> -->
                             <button type="button" class="btn btn-sm btn-outline-info" (click)="showSinglePost(post)">View</button>
-                            <button type="button" class="btn btn-sm btn-outline-primary" (click)="openModal(template, post)">Edit</button>
-                            <button type="button" class="btn btn-sm btn-outline-danger" (click)="deletePost(post)">Delete</button>
+                            <button type="button" class="btn btn-sm btn-outline-primary" (click)="openModalAddOrUpdate(template, post)">Edit</button>
+                            <!-- <button type="button" class="btn btn-sm btn-outline-danger" (click)="deletePost(post)">Delete</button> -->
+                            <button type="button" class="btn btn-sm btn-outline-danger" (click)="openModalDelete(question, post)">Delete</button>
                         </div>
                     </div>
                 </div>
@@ -47,5 +48,18 @@
             <small *ngIf="postBody.errors?.['required'] && showError">Body is required.</small>
         </div>
         <button type="button" class="btn btn-primary mt-3" (click)="save()">{{ btnTitle }}</button>
+    </div>
+</ng-template>
+
+<ng-template #question>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Are you sure you want to delete this post?</h4>
+      <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+        <span aria-hidden="true" class="visually-hidden">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <button type="button" class="btn btn-primary mt-3"(click)="deletePost(deletedPost)">Yes</button>
+        <button type="button" class="btn btn-secondary mt-3" data-dismiss="modal" (click)="modalRef?.hide()">No</button>
     </div>
 </ng-template>
