@@ -1,6 +1,7 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { NgbAlert } from '@ng-bootstrap/ng-bootstrap';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { PostService } from 'src/app/shared/services/post/post.service';
 import { IPost } from '../post';
@@ -20,6 +21,7 @@ export class PostsComponent implements OnInit {
   public postTitle = new FormControl('', Validators.required);
   public postBody = new FormControl('', Validators.required);
   public showError = false;
+  public showSuccess = false;
   modalRef?: BsModalRef;
   deletedPost = [] as any;
 
@@ -150,6 +152,7 @@ export class PostsComponent implements OnInit {
     this.getList();
     this.reset();
     this.showError = false;
+    this.showSuccess = true;
     this.modalRef?.hide();
   }
 

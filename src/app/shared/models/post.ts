@@ -1,12 +1,11 @@
 export class Post {
-    id: number;
+    id: number | null = null;
     title: string | null = null;
-    text: string | null = null;
-    isVisible: boolean = true;
+    body: string | null = null;
 
-    constructor(id: number, title: string, text: string){
+    constructor(id: number, title: string, body: string){
         this.id = id;
         this.title = title;
-        this.text = text;
+        this.body = body;
     }
 }

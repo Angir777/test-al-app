@@ -7,6 +7,7 @@ import { TestChildComponent } from './test-child/test-child.component';
 import { CommonModule } from '@angular/common';
 import { PostRoutingModule } from './post-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     CommonModule,
     PostRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgbModule,
   ]
 })
 export class PostModule { }
