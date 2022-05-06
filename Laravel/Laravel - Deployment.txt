@@ -1,0 +1,13 @@
+Laravel Deployment:
+
+https://laraveldaily.com/how-to-deploy-laravel-projects-to-live-server-the-ultimate-guide/
+
+Optimizing Configuration Loading: php artisan config:cache
+
+Optimizing Route Loading: php artisan route:cache
+
+Optimizing View Loading: php artisan view:cache
+
+APP_DEBUG false
+
+Wrzucenie plików i ścieżka domeny na folder public

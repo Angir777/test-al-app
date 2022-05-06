@@ -1,0 +1,28 @@
+Laravel Niejawne wiązanie
+
+Laravel automatycznie rozwiązuje modele Eloquent zdefiniowane w trasach lub akcjach kontrolera, których nazwy zmiennych ze wskazówką typu pasują do nazwy segmentu trasy. 
+
+use App\Models\User;
+ 
+Route::get('/users/{user}', function (User $user) {
+    return $user->email;
+});
+
+Laravel automatycznie wstrzyknie instancję modelu, która ma ID pasujące do odpowiedniej wartości z żądania URI. 
+Jeśli pasująca instancja modelu nie zostanie znaleziona w bazie danych, automatycznie zostanie wygenerowana odpowiedź HTTP 404.
+
+Oczywiście niejawne wiązanie jest również możliwe podczas korzystania z metod kontrolera. Ponownie zauważ, że {user}segment URI pasuje do $userzmiennej w kontrolerze, która zawiera App\Models\Userwskazówkę dotyczącą typu:
+
+use App\Http\Controllers\UserController;
+use App\Models\User;
+ 
+// Route definition...
+Route::get('/users/{user}', [UserController::class, 'show']);
+ 
+// Controller method definition...
+public function show(User $user)
+{
+    return view('user.profile', ['user' => $user]);
+}
+
+teraz w zmiennej $user mamy cały model od użytkownika i możemy np odwoła się do emailu: $user->email

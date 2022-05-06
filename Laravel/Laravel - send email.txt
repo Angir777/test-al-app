@@ -1,0 +1,90 @@
+Laravel - send email
+
+1. Controler lub routing
+
+use Illuminate\Support\Facades\Mail;
+
+Route::get('/', function () {
+
+    $var = 'test2';
+        
+        $return = Mail::to('test@op.pl')->send(
+            new Example($var)
+        );
+
+        echo 'Mail: ' . $return;
+
+    return view('welcome');
+});
+
+2. Tworzymi plik Example.php w app/Mail:   
+
+<?php
+
+namespace App\Mail;
+
+use Illuminate\Bus\Queueable;
+use Illuminate\Mail\Mailable;
+use Illuminate\Queue\SerializesModels;
+
+class Example extends Mailable
+{
+    use Queueable, SerializesModels;
+
+    private $var;
+
+    /**
+     * Create a new message instance.
+     *
+     * @return void
+     */
+    public function __construct($var)
+    {
+        $this->var = $var;
+    }
+
+    /**
+     * Build the message.
+     *
+     * @return $this
+     */
+    public function build()
+    {
+        return $this->subject('Zmiany dotyczące próbek')
+            ->view('emails.testmail')
+            ->with([
+                'var' => $this->var
+            ]);
+    }
+}
+
+3. A w resources/views/emails/ testmail.blade.php To szablon naszego maila w html
+
+<h3>
+    {{ $var }}.
+</h3>
+
+4. ENV - Wykorzystująć np https://mailtrap.io/
+
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.mailtrap.io
+MAIL_PORT=2525
+MAIL_USERNAME=861b21b91a2bc4
+MAIL_PASSWORD=b3d9ddca10a84f
+MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS=test@op.pl
+MAIL_FROM_NAME="${APP_NAME}"
+
+
+Załączniki?? - DO SPRAWDZENIA
+
+public function build()
+{
+    return $this->view('emails.orders.shipped')
+                ->attachData($this->pdf, 'name.pdf', [
+                    'mime' => 'application/pdf',
+                ]);
+}
+
+
+ 

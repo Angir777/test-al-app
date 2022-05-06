@@ -1,0 +1,32 @@
+Laravel - Soft Deleting
+
+Wdrożenie miękiego usówania
+
+Do modelu dodajemy
+
+<?php
+ 
+namespace App\Models;
+ 
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+ 
+class Flight extends Model
+{
+    use SoftDeletes;
+}
+
+a do migracji
+
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+ 
+Schema::table('flights', function (Blueprint $table) {
+    $table->softDeletes();
+});
+ 
+Schema::table('flights', function (Blueprint $table) {
+    $table->dropSoftDeletes();
+});
+
+I teraz pojazuje nam się w bazie kolumna deleted_at

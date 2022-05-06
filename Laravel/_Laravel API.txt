@@ -1,0 +1,7 @@
+Laravel Api
+
+https://laraveldaily.teachable.com/p/how-to-create-laravel-api
+
+Resources - to co zwraca api
+
+php artisan make:resource V1/N/NResource

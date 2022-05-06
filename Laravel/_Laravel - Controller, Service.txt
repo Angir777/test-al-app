@@ -1,0 +1,12 @@
+Laravel Controller i Service
+
+php artisan make:controller NameController -r 			<- metody CRUID
+php artisan make:controller NameController --api		<- metody pod API
+
+php artisan make:controller PostController --service		<- Generate a service for a controller
+
+php artisan make:service UserService
+php artisan make:model Post --service				<- Generate a service for a model
+php artisan make:model Post --all				<- generate a service, migration, seeder, factory, policy, and resource controller for the model.
+
+Żródło: https://bestofphp.com/repo/timwassenburg-laravel-service-generator

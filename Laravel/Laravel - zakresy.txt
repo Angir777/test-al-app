@@ -1,0 +1,46 @@
+Laravel zakresy - czyli odgórnie przygotowane zapytania w elquent - dobre gdy sie powtarzają często
+
+W modelu, np. User:
+
+/**
+     * Scope a query to only include popular users.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopePopular($query)
+    {
+        return $query->where('votes', '>', 100);
+    }
+
+
+Aby skorzystać musimy wpisać bez 'scope' i z małej litery
+
+$users = User::popular()->orderBy('created_at')->get();
+
+
+Z parametrami: 
+
+<?php
+ 
+namespace App\Models;
+ 
+use Illuminate\Database\Eloquent\Model;
+ 
+class User extends Model
+{
+    /**
+     * Scope a query to only include users of a given type.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  mixed  $type
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeOfType($query, $type)
+    {
+        return $query->where('type', $type);
+    }
+}
+
+Po dodaniu oczekiwanych argumentów do podpisu metody zakresu, możesz przekazać argumenty podczas wywoływania zakresu:
+$users = User::ofType('admin')->get();

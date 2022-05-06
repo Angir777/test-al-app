@@ -1,0 +1,58 @@
+Laravel File Storage:
+
+W config/filesystems.php dodajemy nowy dysk:
+
+'toy' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/toy'),
+            'url' => env('APP_URL').'/storage/toy',
+            'visibility' => 'public',
+        ],
+
+Następnie wpisujemy komendę php artisan storage:link jeśli katalog piblic/storage istnieje to przed tą komendą
+musimy go usunąć.
+
+Przesyłanie pliku w kontrolerze. Najpierw standardowo potrzebujemy input a potem w kontrolerze:
+add
+// Jeśli przesyłane jest zdjęcie to sprawdzamy czy udało się przesłać
+            if ($request->hasFile('image_url')) {
+                
+                // Przesłanie pliku
+                $uploaded_file = $request->file('image_url');
+                Storage::disk('toy')->putFileAs('/', $uploaded_file, $res->id . '.jpg');
+
+                if ($uploaded_file === false) {
+                    throw new HttpResponseException(redirect()
+                        ->route('childrens-day-toy.index')
+                        ->with('error', __('translations.childrens_day.messages.failedToSendImage'))
+                    );
+                }
+            }
+update
+// Jeśli przesyłane jest zdjęcie to sprawdzamy czy udało się przesłać
+            if ($request->hasFile('image_url')) {
+                
+                // Przesłanie pliku
+                $uploaded_file = $request->file('image_url');
+                Storage::disk('toy')->putFileAs('/', $uploaded_file, $toy->image_url);
+                
+                if ($uploaded_file === false) {
+                    throw new HttpResponseException(redirect()
+                        ->route('childrens-day-toy.index')
+                        ->with('error', __('translations.childrens_day.messages.failedToSendImage'))
+                    );
+                }
+            }
+Wiadomo, nazwa zapisywana jest do DB
+
+Aby wyświetlić plik musimy:
+
+// sprawdź czy plik istnieje na dysku
+                if (Storage::disk('toy')->exists($row->image_url)) {
+                    // pobierz file url
+                    $file = Storage::disk('toy')->url($row->image_url);
+                    return '<img src="' . $file . '" class="img-thumbnail">';
+                }
+
+
+Ciekawa biblioteka do manipulacji obrazem https://github.com/Intervention/image np. przycięcie czy znak wodny

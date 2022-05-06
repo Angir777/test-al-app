@@ -1,0 +1,147 @@
+Laravel - Request
+
+Korzystająć z funkcji store lub update możemy chcieć walidować dane przesyłane z formularza.
+Przykład z ChildrensDayToy
+
+1. W kontrolerze dodajemy np.
+
+public function store(StoreChildrensDayToyRequest $request){}
+
+lub
+
+public function update(UpdateChildrensDayToyRequest $request){}
+
+2. Pliki StoreChildrensDayToyRequest i UpdateChildrensDayToyRequest tworzymy w folderze 
+app/Http/Requests/ChildrensDayToy/StoreChildrensDayToyRequest.php
+
+php artisan make:request ChildrensDayToy/StoreChildrensDayToyRequest
+
+<?php
+
+namespace App\Http\Requests\ChildrensDay\ChildrensDayToy;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class StoreChildrensDayToyRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
+    {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        return [
+            'title' => 'required|max:191',
+            'description' => 'required',
+            'image_url' => [
+                'required',
+                'mimes:jpg,bmp,png',
+                'max:5000' // 1000 kb to 1 mb
+            ],
+            'age_category' => 'required|max:191',
+            'available_items' => 'required|numeric|min:0',
+            'number_on_list' => 'required|numeric|min:0',
+        ];
+    }
+}
+
+<?php
+
+namespace App\Http\Requests\ChildrensDay\ChildrensDayToy;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class UpdateChildrensDayToyRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
+    {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        return [
+            'id' => 'required',
+            'title' => 'required|max:191',
+            'description' => 'required',
+            'image_url' => [
+                'mimes:jpg,bmp,png',
+                'max:5000' // 1000 kb to 1 mb
+            ],
+            'age_category' => 'required|max:191',
+            'available_items' => 'required|numeric|min:0',
+            'number_on_list' => 'required|numeric|min:0',
+        ];
+    }
+}
+
+Zwróć uwagę, że przy update mamy dodatkowe pole 'id'. No i w tych plikach ustalamy jakie wymagania mają mieć poszczególne pola.
+Te pola muszą się pokrywać z tymi z migracji. Chyba ze akurat jakieś ma być nie walidowane.
+Tutaj mamy fajny przykład walidacji plików.
+
+Źródło w dokumentacji: https://laravel.com/docs/9.x/validation
+
+
+
+Inny ciekawy przykład z LEC. 
+
+Mamy tabelę 'line_user': [id,line_id,user_id,shifts,workers_count,created_at,updated_at]
+
+Dla danej tabeli nie mozę się powtarzać układ line_id - user_id,
+czyli np 5 - 1 tylko raz wystąpi w tabeli, nie powturzy się taki wiersz.
+
+Store:
+
+public function rules()
+    {
+        return [
+            'line_id' => 'required|numeric',
+            'user_id' => [
+                'required',
+                Rule::unique('line_user')
+                    ->where('line_id', $this->input('line_id')),
+                'numeric',
+            ],
+            'shifts' => 'required|boolean',
+            'workers_count' => 'required|boolean',
+        ];
+    }
+
+Update:
+
+public function rules()
+    {
+        return [
+            'line_id' => 'required|numeric',
+            'user_id' => [
+                'required',
+                Rule::unique('line_user')
+                    ->where('line_id', $this->input('line_id'))
+                    ->ignore($this->input('id')),
+                'numeric',
+            ],
+            'shifts' => 'required|boolean',
+            'workers_count' => 'required|boolean',
+        ];
+    }
